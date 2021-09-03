@@ -32,7 +32,7 @@ ln -s /datasets/table0901/TableBank/Detection/ /home/tml/vansin/tabnet/data/tabl
 
 
 ```shell
-python tools/train.py config/tabnet/table_v2.py
+python tools/train.py configs/tabnet/table_v2.py
 ```
 
 ```shell
