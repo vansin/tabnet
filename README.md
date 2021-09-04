@@ -35,6 +35,23 @@ ln -s /datasets/table0901/TableBank/Detection/ /home/tml/vansin/tabnet/data/tabl
 python tools/train.py configs/tabnet/table_v2.py
 ```
 
+
+## Test
+
 ```shell
 ln -s 
+```
+
+```shell
+python demo/image_demo.py /datasets/table0901/TableBank/Detection/images/%5BMS-DOM2S%5D-180323_6.jpg \
+    configs/faster_rcnn/faster_rcnn_r50_fpn_1x_coco.py \
+    checkpoints/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth \
+    --device cpu
+```
+
+```shell
+python demo/image_demo.py /datasets/table0901/TableBank/Detection/images/%5BMS-DOM2S%5D-180323_6.jpg \
+    work_dirs/faster_rcnn_r50_fpn_2x_coco/table_v3.py \
+    work_dirs/faster_rcnn_r50_fpn_2x_coco/epoch_2.pth \
+    --device cpu
 ```
