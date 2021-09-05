@@ -220,7 +220,7 @@ log_config = dict(interval=50, hooks=[dict(type='TextLoggerHook')])
 custom_hooks = [dict(type='NumClassCheckHook')]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-load_from = None
+load_from = './work_dirs/faster_rcnn_r50_fpn_2x_coco/epoch_2.pth'
 resume_from = None
 workflow = [('train', 1)]
 work_dir = './work_dirs/faster_rcnn_r50_fpn_2x_coco'
