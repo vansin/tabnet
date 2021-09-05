@@ -4,6 +4,8 @@
 
 ## install
 
+### Method 1
+
 ```shell
 conda create -n tabnet python=3.7 -y
 conda activate tabnet
@@ -11,6 +13,19 @@ conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch
 
 pip install openmim
 mim install mmdet
+
+```
+### Method 2
+
+```shell
+conda create -n tabnet python=3.7 -y
+conda activate tabnet
+conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.1 -c pytorch -y
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
+
+pip install -r requirements/build.txt
+
+pip install -v -e .  # or "python setup.py develop"
 
 ```
 
