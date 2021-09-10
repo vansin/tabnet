@@ -58,7 +58,8 @@ python tools/train.py configs/tabnet/table_v2.py
     configs/tabnet/table_v3.py \
     /home/tml/vansin/paper/tabnet/work_dirs/faster_rcnn_r50_fpn_2x_coco/epoch_2.pth \
     --out results.pkl \
-    --eval bbox segm
+    --eval bbox \
+    --show
 ```
 
 ```shell
