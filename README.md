@@ -54,12 +54,11 @@ python tools/train.py configs/tabnet/table_v2.py
 ## Test
 
 ```shell
-[CUDA_VISIBLE_DEVICES=1 python tools/test.py \
-    configs/tabnet/table_v3.py \
-    /home/tml/vansin/paper/tabnet/work_dirs/faster_rcnn_r50_fpn_2x_coco/epoch_2.pth \
+CUDA_VISIBLE_DEVICES=1 python test.py \  
+    configs/tabnet/table_v4-mask_rcnn_swin-t-p4-w7_fpn_1x_coco_small.py \
+    /home/tml/vansin/paper/tabnet/work_dirs/table_v4-mask_rcnn_swin-t-p4-w7_fpn_1x_coco_small/epoch_12.pth \
     --out results.pkl \
-    --eval bbox \
-    --show
+    --eval bbox 
 ```
 
 ```shell
