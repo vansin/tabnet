@@ -33,6 +33,7 @@ print(train_image_set.intersection(test_image_set))
 
 # data = {}
 data.pop('images')
+
 images = []
 for i,image in enumerate(images_train):
     if i % 100 == 0:
