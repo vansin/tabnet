@@ -75,3 +75,10 @@ python demo/image_demo.py /datasets/table0901/TableBank/Detection/images/%5BMS-D
     work_dirs/faster_rcnn_r50_fpn_2x_coco/epoch_2.pth \
     --device cpu
 ```
+
+
+```shell
+ln -s /tmp/ramdisk/Detection/ /home/tml/vansin/paper/tabnet/data/table
+
+ln -s /run/user/1000/gvfs/smb-share:server=192.168.4.21,share=datasets/table0901/TableBank/Detection /home/tml/vansin/paper/tabnet/data/table
+```
