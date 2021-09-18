@@ -143,7 +143,7 @@ data = dict(
     workers_per_gpu=4,
     train=dict(
         type='TableDataset',
-        ann_file='data/table/annotations/tablebank_word_train.json',
+        ann_file='data/table/annotations/tablebank_word_train_son.json',
         img_prefix='data/table/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -220,8 +220,8 @@ log_config = dict(interval=50, hooks=[dict(type='TextLoggerHook')])
 custom_hooks = [dict(type='NumClassCheckHook')]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-load_from = './work_dirs/faster_rcnn_r50_fpn_2x_coco/epoch_2.pth'
+load_from = None
 resume_from = None
 workflow = [('train', 1)]
-work_dir = './work_dirs/faster_rcnn_r50_fpn_2x_coco'
+work_dir = './work_dirs/table_v3-faster_rcnn_r50_fpn_2x_coco_small'
 gpu_ids = range(0, 1)
