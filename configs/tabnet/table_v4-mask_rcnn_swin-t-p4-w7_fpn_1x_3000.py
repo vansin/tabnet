@@ -303,5 +303,5 @@ load_from = None
 resume_from = None
 workflow = [('train', 1)]
 pretrained = 'https://download.openmmlab.com/mmclassification/v0/swin-transformer/swin_tiny_224_b16x64_300e_imagenet_20210616_090925-66df6be6.pth'
-work_dir = './work_dirs/table_v4-mask_rcnn_swin-t-p4-w7_fpn_1x_1500'
+work_dir = './work_dirs/table_v4-mask_rcnn_swin-t-p4-w7_fpn_1x_3000'
 gpu_ids = range(0, 1)
