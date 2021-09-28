@@ -108,7 +108,7 @@ data = dict(
         times=5,
         dataset=dict(
             type='TableDataset',
-            ann_file='data/table/annotations/word_train.json',
+            ann_file='data/table/annotations/both_train.json',
             img_prefix='data/table/images/',
             pipeline=[
                 dict(type='LoadImageFromFile', to_float32=True),
@@ -161,7 +161,7 @@ data = dict(
         ]),
     test=dict(
         type='TableDataset',
-        ann_file='data/table/annotations/word_test.json',
+        ann_file='data/table/annotations/both_test.json',
         img_prefix='data/table/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -201,5 +201,5 @@ log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-work_dir = './work_dirs/table-ssd300_word'
+work_dir = './work_dirs/table-ssd300_both'
 gpu_ids = range(0, 1)
