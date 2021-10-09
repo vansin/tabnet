@@ -18,10 +18,17 @@ mim install mmdet
 ### Method 2
 
 ```shell
-conda create -n tabnet python=3.7 -y
-conda activate tabnet
-conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.1 -c pytorch -y
-pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
+conda create -n tabnet_dev python=3.7 -y
+conda activate tabnet_dev
+
+# conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.1 -c pytorch -y
+# pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
+
+
+
+conda install pytorch==1.9.0 torchvision==0.10.0 cudatoolkit=11.1 -c pytorch -c nvidia -y
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.9.0/index.html
+
 
 pip install -r requirements/build.txt
 
@@ -34,8 +41,8 @@ pip install -v -e .  # or "python setup.py develop"
 
 ### 挂载群辉网络数据
 ```shell
-sudo mount.cifs //v4.vansin.top/datasets /datasets -o user=vansin,pass=****,vers=2.0 
-sudo mount.cifs //192.168.4.21/datasets /datasets -o user=vansin,pass=****,vers=2.0 
+sudo mount.cifs //v4.vansin.top/datasets /datasets -o user=vansin,pass=****,vers=2.0
+sudo mount.cifs //192.168.4.21/datasets /datasets -o user=vansin,pass=****,vers=2.0
 ```
 ### 软链接
 
@@ -57,7 +64,7 @@ python tools/train.py configs/tabnet/table_v2.py
 CUDA_VISIBLE_DEVICES=1 python test.py configs/tabnet/table_v4-mask_rcnn_swin-t-p4-w7_fpn_1x_coco_small.py \
 /home/tml/vansin/paper/tabnet/work_dirs/table_v4-mask_rcnn_swin-t-p4-w7_fpn_1x_coco_small/epoch_12.pth \
 --out results.pkl \
---eval bbox 
+--eval bbox
 ```
 
 ### Test all the train
