@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from .builder import build_linear_layer, build_transformer
+from .ckpt_convert import pvt_convert
 from .conv_upsample import ConvUpsample
 from .csp_layer import CSPLayer
 from .gaussian_target import gaussian_radius, gen_gaussian_target
@@ -12,7 +13,8 @@ from .positional_encoding import (LearnedPositionalEncoding,
 from .res_layer import ResLayer, SimplifiedBasicBlock
 from .se_layer import SELayer
 from .transformer import (DetrTransformerDecoder, DetrTransformerDecoderLayer,
-                          DynamicConv, Transformer)
+                          DynamicConv, PatchEmbed, Transformer, nchw_to_nlc,
+                          nlc_to_nchw)
 
 __all__ = [
     'ResLayer', 'gaussian_radius', 'gen_gaussian_target',
@@ -20,5 +22,6 @@ __all__ = [
     'build_transformer', 'build_linear_layer', 'SinePositionalEncoding',
     'LearnedPositionalEncoding', 'DynamicConv', 'SimplifiedBasicBlock',
     'NormedLinear', 'NormedConv2d', 'make_divisible', 'InvertedResidual',
-    'SELayer', 'interpolate_as', 'ConvUpsample', 'CSPLayer'
+    'SELayer', 'interpolate_as', 'ConvUpsample', 'CSPLayer', 'PatchEmbed',
+    'nchw_to_nlc', 'nlc_to_nchw', 'pvt_convert'
 ]
