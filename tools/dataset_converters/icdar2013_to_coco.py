@@ -272,6 +272,14 @@ def main():
         json_out_path,
         out_valid_img_dir='/home/tml/datasets/valid_icdar2019')
 
+    prefix = '/home/tml/vansin/paper/ICDAR2019_cTDaR'
+    xml_path = prefix + '/test/TRACKA'
+    json_out_path = prefix + '/test.json'
+    cvt_annotations(
+        xml_path,
+        json_out_path,
+        out_valid_img_dir='/home/tml/datasets/valid_icdar2019_test')
+
 
 if __name__ == '__main__':
     main()
