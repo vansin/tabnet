@@ -89,3 +89,21 @@ ln -s /tmp/ramdisk/Detection/ /home/tml/vansin/paper/tabnet/data/table
 
 ln -s /run/user/1000/gvfs/smb-share:server=192.168.4.21,share=datasets/table0901/TableBank/Detection /home/tml/vansin/paper/tabnet/data/table
 ```
+
+## ONNX模型转换
+
+
+```Shell
+python tools/deployment/pytorch2onnx.py \
+    configs/tabnet/table_v4-mask_rcnn_swin-t-p4-w7_fpn_1x_3000.py \
+    checkpoints/tabnet/epoch_12.pth \
+    --output-file checkpoints/tabnet/epoch_12.onnx \
+    --input-img demo/demo.jpg \
+    --test-img tests/data/color.jpg \
+    --shape 608 608 \
+    --show \
+    --verify \
+    --dynamic-export \
+    --cfg-options \
+      model.test_cfg.deploy_nms_pre=-1 \
+```
