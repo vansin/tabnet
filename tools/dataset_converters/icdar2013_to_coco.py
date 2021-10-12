@@ -25,6 +25,7 @@ def parse_xml(args):
     # labels_ignore = []
 
     image = mmcv.imread(img_path)
+
     w = image.shape[1]
     h = image.shape[0]
 
@@ -97,7 +98,8 @@ def parse_xml(args):
     mmcv.imwrite(image, valid_img_path)
 
     annotation = {
-        'filename': img_path,
+        # 'filename': img_path,
+        'filename': img_path.split('/')[len(img_path.split('/')) - 1],
         'width': w,
         'height': h,
         'ann': {
