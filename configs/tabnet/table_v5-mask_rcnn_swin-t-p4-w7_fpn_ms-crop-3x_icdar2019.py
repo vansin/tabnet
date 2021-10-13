@@ -264,8 +264,8 @@ data = dict(
         ]),
     val=dict(
         type='TableDataset',
-        ann_file='data/table/annotations/tablebank_word_val.json',
-        img_prefix='data/table/images/',
+        ann_file='data/icdar2019/test.json',
+        img_prefix='data/icdar2019/test/TRACKA/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
