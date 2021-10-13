@@ -14,6 +14,10 @@ def voc_classes():
     ]
 
 
+def table_classes():
+    return ['table']
+
+
 def imagenet_det_classes():
     return [
         'accordion', 'airplane', 'ant', 'antelope', 'apple', 'armadillo',

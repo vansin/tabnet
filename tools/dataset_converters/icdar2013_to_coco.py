@@ -8,9 +8,9 @@ import cv2 as cv
 import mmcv
 import numpy as np
 
-from mmdet.core import voc_classes
+from mmdet.core import table_classes
 
-label_ids = {name: i for i, name in enumerate(voc_classes())}
+label_ids = {name: i for i, name in enumerate(table_classes())}
 
 
 def parse_xml(args):
@@ -207,12 +207,14 @@ def cvt_to_coco_json(annotations):
         coco['annotations'].append(annotation_item)
         return annotation_id + 1
 
-    for category_id, name in enumerate(voc_classes()):
-        category_item = dict()
-        category_item['supercategory'] = str('none')
-        category_item['id'] = int(category_id)
-        category_item['name'] = str(name)
-        coco['categories'].append(category_item)
+    # for category_id, name in enumerate(table_classes()):
+    #     category_item = dict()
+    #     category_item['supercategory'] = str('none')
+    #     category_item['id'] = int(category_id)
+    #     category_item['name'] = str(name)
+    #     coco['categories'].append(category_item)
+
+    coco['categories'] = [{'id': 1, 'supercategory': 'table', 'name': 'table'}]
 
     for ann_dict in annotations:
         file_name = ann_dict['filename']
