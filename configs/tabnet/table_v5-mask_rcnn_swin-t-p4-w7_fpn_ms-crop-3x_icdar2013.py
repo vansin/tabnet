@@ -17,7 +17,8 @@ model = dict(
         with_cp=False,
         init_cfg=dict(
             type='Pretrained',
-            checkpoint='https://download.openmmlab.com/mmclassification/v0/swin-transformer/swin_tiny_224_b16x64_300e_imagenet_20210616_090925-66df6be6.pth')),
+            checkpoint='https://download.openmmlab.com/mmclassification/v0/swin-transformer/swin_tiny_224_b16x64_300e_imagenet_20210616_090925-66df6be6.pth'
+        )),
     neck=dict(
         type='FPN',
         in_channels=[96, 192, 384, 768],
@@ -144,30 +145,31 @@ train_pipeline = [
             'value',
             'keep_ratio':
             True
-        }], [{
-            'type': 'Resize',
-            'img_scale': [(400, 1333), (500, 1333), (600, 1333)],
-            'multiscale_mode': 'value',
-            'keep_ratio': True
-        }, {
-            'type': 'RandomCrop',
-            'crop_type': 'absolute_range',
-            'crop_size': (384, 600),
-            'allow_negative_crop': True
-        }, {
-            'type':
-            'Resize',
-            'img_scale': [(480, 1333), (512, 1333), (544, 1333),
-                          (576, 1333), (608, 1333), (640, 1333),
-                          (672, 1333), (704, 1333), (736, 1333),
-                          (768, 1333), (800, 1333)],
-            'multiscale_mode':
-            'value',
-            'override':
-            True,
-            'keep_ratio':
-            True
-        }]]),
+        }],
+            [{
+                'type': 'Resize',
+                'img_scale': [(400, 1333), (500, 1333), (600, 1333)],
+                'multiscale_mode': 'value',
+                'keep_ratio': True
+            }, {
+                'type': 'RandomCrop',
+                'crop_type': 'absolute_range',
+                'crop_size': (384, 600),
+                'allow_negative_crop': True
+            }, {
+                'type':
+                'Resize',
+                'img_scale': [(480, 1333), (512, 1333), (544, 1333),
+                              (576, 1333), (608, 1333), (640, 1333),
+                              (672, 1333), (704, 1333), (736, 1333),
+                              (768, 1333), (800, 1333)],
+                'multiscale_mode':
+                'value',
+                'override':
+                True,
+                'keep_ratio':
+                True
+            }]]),
     dict(
         type='Normalize',
         mean=[123.675, 116.28, 103.53],
@@ -201,8 +203,8 @@ data = dict(
     workers_per_gpu=2,
     train=dict(
         type='TableDataset',
-        ann_file='data/icdar2019/test.json',
-        img_prefix='data/icdar2019/test/TRACKA/',
+        ann_file='data/icdar2013/annotations/table_ICDAR2013_segm_train.json',
+        img_prefix='data/icdar2013/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
@@ -261,8 +263,8 @@ data = dict(
         ]),
     val=dict(
         type='TableDataset',
-        ann_file='data/icdar2019/train.json',
-        img_prefix='data/icdar2019/training/TRACKA/ground_truth/',
+        ann_file='data/icdar2013/annotations/table_ICDAR2013_segm_test.json',
+        img_prefix='data/icdar2013/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -284,8 +286,8 @@ data = dict(
         ]),
     test=dict(
         type='TableDataset',
-        ann_file='data/icdar2019/test.json',
-        img_prefix='data/icdar2019/test/TRACKA/',
+        ann_file='data/icdar2013/annotations/table_ICDAR2013_segm_test.json',
+        img_prefix='data/icdar2013/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -333,5 +335,5 @@ load_from = None
 resume_from = None
 workflow = [('train', 1)]
 pretrained = 'https://download.openmmlab.com/mmclassification/v0/swin-transformer/swin_tiny_224_b16x64_300e_imagenet_20210616_090925-66df6be6.pth'
-work_dir = './work_dirs/table_v5-mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco'
+work_dir = './work_dirs/table_v5-mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_icdar2013'
 gpu_ids = range(0, 1)
