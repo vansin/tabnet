@@ -17,7 +17,8 @@ model = dict(
         with_cp=False,
         init_cfg=dict(
             type='Pretrained',
-            checkpoint='https://download.openmmlab.com/mmclassification/v0/swin-transformer/swin_tiny_224_b16x64_300e_imagenet_20210616_090925-66df6be6.pth')),
+            checkpoint='https://download.openmmlab.com/mmclassification/v0/swin-transformer/swin_tiny_224_b16x64_300e_imagenet_20210616_090925-66df6be6.pth'
+        )),
     neck=dict(
         type='FPN',
         in_channels=[96, 192, 384, 768],
@@ -124,7 +125,7 @@ model = dict(
             nms=dict(type='nms', iou_threshold=0.5),
             max_per_img=100,
             mask_thr_binary=0.5)))
-dataset_type = 'TableDataset'
+dataset_type = 'CocoDataset'
 data_root = 'data/table/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
@@ -144,30 +145,31 @@ train_pipeline = [
             'value',
             'keep_ratio':
             True
-        }], [{
-            'type': 'Resize',
-            'img_scale': [(400, 1333), (500, 1333), (600, 1333)],
-            'multiscale_mode': 'value',
-            'keep_ratio': True
-        }, {
-            'type': 'RandomCrop',
-            'crop_type': 'absolute_range',
-            'crop_size': (384, 600),
-            'allow_negative_crop': True
-        }, {
-            'type':
-            'Resize',
-            'img_scale': [(480, 1333), (512, 1333), (544, 1333),
-                          (576, 1333), (608, 1333), (640, 1333),
-                          (672, 1333), (704, 1333), (736, 1333),
-                          (768, 1333), (800, 1333)],
-            'multiscale_mode':
-            'value',
-            'override':
-            True,
-            'keep_ratio':
-            True
-        }]]),
+        }],
+            [{
+                'type': 'Resize',
+                'img_scale': [(400, 1333), (500, 1333), (600, 1333)],
+                'multiscale_mode': 'value',
+                'keep_ratio': True
+            }, {
+                'type': 'RandomCrop',
+                'crop_type': 'absolute_range',
+                'crop_size': (384, 600),
+                'allow_negative_crop': True
+            }, {
+                'type':
+                'Resize',
+                'img_scale': [(480, 1333), (512, 1333), (544, 1333),
+                              (576, 1333), (608, 1333), (640, 1333),
+                              (672, 1333), (704, 1333), (736, 1333),
+                              (768, 1333), (800, 1333)],
+                'multiscale_mode':
+                'value',
+                'override':
+                True,
+                'keep_ratio':
+                True
+            }]]),
     dict(
         type='Normalize',
         mean=[123.675, 116.28, 103.53],
@@ -333,5 +335,6 @@ load_from = None
 resume_from = None
 workflow = [('train', 1)]
 pretrained = 'https://download.openmmlab.com/mmclassification/v0/swin-transformer/swin_tiny_224_b16x64_300e_imagenet_20210616_090925-66df6be6.pth'
-work_dir = './work_dirs/table_v5-mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_icdar2019'
+fp16 = dict(loss_scale=dict(init_scale=512))
+work_dir = './work_dirs/table_v7-mask_rcnn_swin-t-p4-w7_fpn_fp16_ms-crop-3x_icdar2019'
 gpu_ids = range(0, 1)
