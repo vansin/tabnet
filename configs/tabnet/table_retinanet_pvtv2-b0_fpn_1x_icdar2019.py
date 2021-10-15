@@ -112,8 +112,8 @@ data = dict(
     workers_per_gpu=2,
     train=dict(
         type='TableDataset',
-        ann_file='data/table/annotations/tablebank_word_train.json',
-        img_prefix='data/table/images/',
+        ann_file='data/icdar2019/train.json',
+        img_prefix='data/icdar2019/training/TRACKA/ground_truth/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='LoadAnnotations', with_bbox=True),
@@ -130,8 +130,8 @@ data = dict(
         ]),
     val=dict(
         type='TableDataset',
-        ann_file='data/table/annotations/tablebank_word_val.json',
-        img_prefix='data/table/images/',
+        ann_file='data/icdar2019/test.json',
+        img_prefix='data/icdar2019/test/TRACKA/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -153,8 +153,8 @@ data = dict(
         ]),
     test=dict(
         type='TableDataset',
-        ann_file='data/table/annotations/tablebank_word_test.json',
-        img_prefix='data/table/images/',
+        ann_file='data/icdar2019/test.json',
+        img_prefix='data/icdar2019/test/TRACKA/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -192,5 +192,5 @@ log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-work_dir = './work_dirs/table_retinanet_pvtv2-b0_fpn_1x'
+work_dir = './work_dirs/table_retinanet_pvtv2-b0_fpn_1x_icdar2019'
 gpu_ids = range(0, 1)
