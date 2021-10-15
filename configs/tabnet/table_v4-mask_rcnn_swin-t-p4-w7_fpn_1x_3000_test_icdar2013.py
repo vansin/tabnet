@@ -1,3 +1,46 @@
+# _base_ = [
+#     '../_base_/models/mask_rcnn_r50_fpn.py',
+#     '../_base_/datasets/table_instance.py',
+#     '../_base_/schedules/schedule_1x.py', '../_base_/default_runtime.py'
+# ]
+# pretrained = 'https://download.openmmlab.com/mmclassification/v0/swin-transformer/swin_tiny_224_b16x64_300e_imagenet_20210616_090925-66df6be6.pth'  # noqa
+# model = dict(
+#     type='MaskRCNN',
+#     backbone=dict(
+#         _delete_=True,
+#         type='SwinTransformer',
+#         embed_dims=96,
+#         depths=[2, 2, 6, 2],
+#         num_heads=[3, 6, 12, 24],
+#         window_size=7,
+#         mlp_ratio=4,
+#         qkv_bias=True,
+#         qk_scale=None,
+#         drop_rate=0.,
+#         attn_drop_rate=0.,
+#         drop_path_rate=0.2,
+#         patch_norm=True,
+#         out_indices=(0, 1, 2, 3),
+#         with_cp=False,
+#         init_cfg=dict(type='Pretrained', checkpoint=pretrained)),
+#     neck=dict(in_channels=[96, 192, 384, 768]))
+#
+# optimizer = dict(
+#     _delete_=True,
+#     type='AdamW',
+#     lr=0.0001,
+#     betas=(0.9, 0.999),
+#     weight_decay=0.05,
+#     paramwise_cfg=dict(
+#         custom_keys={
+#             'absolute_pos_embed': dict(decay_mult=0.),
+#             'relative_position_bias_table': dict(decay_mult=0.),
+#             'norm': dict(decay_mult=0.)
+#         }))
+# lr_config = dict(warmup_iters=1000, step=[8, 11])
+# runner = dict(max_epochs=12)
+
+
 model = dict(
     type='MaskRCNN',
     backbone=dict(
@@ -17,8 +60,7 @@ model = dict(
         with_cp=False,
         init_cfg=dict(
             type='Pretrained',
-            # checkpoint='https://download.openmmlab.com/mmclassification/v0/swin-transformer/swin_tiny_224_b16x64_300e_imagenet_20210616_090925-66df6be6.pth'
-            checkpoint='work_dirs/table_v5-mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco/epoch_10.pth'
+            checkpoint='https://download.openmmlab.com/mmclassification/v0/swin-transformer/swin_tiny_224_b16x64_300e_imagenet_20210616_090925-66df6be6.pth'
         )),
     neck=dict(
         type='FPN',
@@ -133,44 +175,8 @@ img_norm_cfg = dict(
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
+    dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
     dict(type='RandomFlip', flip_ratio=0.5),
-    dict(
-        type='AutoAugment',
-        policies=[[{
-            'type':
-            'Resize',
-            'img_scale': [(480, 1333), (512, 1333), (544, 1333), (576, 1333),
-                          (608, 1333), (640, 1333), (672, 1333), (704, 1333),
-                          (736, 1333), (768, 1333), (800, 1333)],
-            'multiscale_mode':
-            'value',
-            'keep_ratio':
-            True
-        }],
-            [{
-                'type': 'Resize',
-                'img_scale': [(400, 1333), (500, 1333), (600, 1333)],
-                'multiscale_mode': 'value',
-                'keep_ratio': True
-            }, {
-                'type': 'RandomCrop',
-                'crop_type': 'absolute_range',
-                'crop_size': (384, 600),
-                'allow_negative_crop': True
-            }, {
-                'type':
-                'Resize',
-                'img_scale': [(480, 1333), (512, 1333), (544, 1333),
-                              (576, 1333), (608, 1333), (640, 1333),
-                              (672, 1333), (704, 1333), (736, 1333),
-                              (768, 1333), (800, 1333)],
-                'multiscale_mode':
-                'value',
-                'override':
-                True,
-                'keep_ratio':
-                True
-            }]]),
     dict(
         type='Normalize',
         mean=[123.675, 116.28, 103.53],
@@ -204,53 +210,13 @@ data = dict(
     workers_per_gpu=2,
     train=dict(
         type='TableDataset',
-        ann_file='data/icdar2013/annotations/table_ICDAR2013_segm_train.json',
-        img_prefix='data/icdar2013/images/',
+        ann_file='data/table/annotations/both_train.json',
+        img_prefix='data/table/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
+            dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
             dict(type='RandomFlip', flip_ratio=0.5),
-            dict(
-                type='AutoAugment',
-                policies=[[{
-                    'type':
-                    'Resize',
-                    'img_scale': [(480, 1333), (512, 1333), (544, 1333),
-                                  (576, 1333), (608, 1333), (640, 1333),
-                                  (672, 1333), (704, 1333), (736, 1333),
-                                  (768, 1333), (800, 1333)],
-                    'multiscale_mode':
-                    'value',
-                    'keep_ratio':
-                    True
-                }],
-                    [{
-                        'type': 'Resize',
-                        'img_scale': [(400, 1333), (500, 1333),
-                                      (600, 1333)],
-                        'multiscale_mode': 'value',
-                        'keep_ratio': True
-                    }, {
-                        'type': 'RandomCrop',
-                        'crop_type': 'absolute_range',
-                        'crop_size': (384, 600),
-                        'allow_negative_crop': True
-                    }, {
-                        'type':
-                        'Resize',
-                        'img_scale': [(480, 1333), (512, 1333),
-                                      (544, 1333), (576, 1333),
-                                      (608, 1333), (640, 1333),
-                                      (672, 1333), (704, 1333),
-                                      (736, 1333), (768, 1333),
-                                      (800, 1333)],
-                        'multiscale_mode':
-                        'value',
-                        'override':
-                        True,
-                        'keep_ratio':
-                        True
-                    }]]),
             dict(
                 type='Normalize',
                 mean=[123.675, 116.28, 103.53],
@@ -264,8 +230,8 @@ data = dict(
         ]),
     val=dict(
         type='TableDataset',
-        ann_file='data/icdar2013/annotations/table_ICDAR2013_segm_test.json',
-        img_prefix='data/icdar2013/images/',
+        ann_file='data/table/annotations/tablebank_word_val.json',
+        img_prefix='data/table/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -325,8 +291,8 @@ lr_config = dict(
     warmup='linear',
     warmup_iters=1000,
     warmup_ratio=0.001,
-    step=[27, 33])
-runner = dict(type='EpochBasedRunner', max_epochs=36)
+    step=[8, 11])
+runner = dict(type='EpochBasedRunner', max_epochs=12)
 checkpoint_config = dict(interval=1)
 log_config = dict(interval=50, hooks=[dict(type='TextLoggerHook')])
 custom_hooks = [dict(type='NumClassCheckHook')]
@@ -335,6 +301,6 @@ log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-pretrained = 'work_dirs/table_v5-mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco/epoch_10.pth'
-work_dir = './work_dirs/table_v5-mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_icdar2013'
+pretrained = 'https://download.openmmlab.com/mmclassification/v0/swin-transformer/swin_tiny_224_b16x64_300e_imagenet_20210616_090925-66df6be6.pth'
+work_dir = './work_dirs/table_v4-mask_rcnn_swin-t-p4-w7_fpn_1x_3000'
 gpu_ids = range(0, 1)
