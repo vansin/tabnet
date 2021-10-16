@@ -47,8 +47,18 @@ sudo mount.cifs //192.168.4.21/datasets /datasets -o user=vansin,pass=****,vers=
 sudo mount -t cifs -o username=vansin,password=Tml768300.,uid=$(id -u),gid=$(id -g) //v4.vansin.top/vansin /home/tml/datasets
 sudo mount -t cifs -o username=vansin,password=Tml768300.,uid=$(id -u),gid=$(id -g) //v4.vansin.top/vansin /home/tml/datasets
 
+
+
+mkdir /tmp/vansin
+# sudo mount -t cifs -o username=vansin,password=Tml768300.,uid=$(id -u),gid=$(id -g) //192.168.4.21/vansin /tmp/vansin
+sudo mount -t cifs -o username=vansin,password=Tml768300.,uid=$(id -u),gid=$(id -g) //v4.vansin.top/vansin /tmp/vansin
+ln -s /tmp/vansin/datasets $(pwd)/data
+ln -s /tmp/vansin/work_dirs $(pwd)/work_dirs
+
 ```
 ### 软链接
+
+
 
 ```shell
 ln -s /datasets/table0901/TableBank/Detection/ /home/tml/vansin/tabnet/data/table
