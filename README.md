@@ -111,3 +111,4 @@ python tools/deployment/pytorch2onnx.py \
     --cfg-options \
       model.test_cfg.deploy_nms_pre=-1 \
 ```
+git remote set-url --add github https://gitee.com/suep_msnode/tabnet.git
