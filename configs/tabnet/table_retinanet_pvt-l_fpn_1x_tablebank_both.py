@@ -98,11 +98,11 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=2,
-    workers_per_gpu=2,
+    samples_per_gpu=1,
+    workers_per_gpu=1,
     train=dict(
         type='TableDataset',
-        ann_file='data/table/annotations/tablebank_word_train.json',
+        ann_file='data/table/annotations/both_train.json',
         img_prefix='data/table/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -143,7 +143,7 @@ data = dict(
         ]),
     test=dict(
         type='TableDataset',
-        ann_file='data/table/annotations/tablebank_word_test.json',
+        ann_file='data/table/annotations/both_test.json',
         img_prefix='data/table/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
