@@ -45,7 +45,7 @@ sudo mount.cifs //v4.vansin.top/datasets /datasets -o user=vansin,pass=****,vers
 sudo mount.cifs //192.168.4.21/datasets /datasets -o user=vansin,pass=****,vers=2.0
 
 sudo mount -t cifs -o username=vansin,password=Tml768300.,uid=$(id -u),gid=$(id -g) //v4.vansin.top/vansin /home/tml/datasets
-sudo mount -t cifs -o username=vansin,password=Tml768300.,uid=$(id -u),gid=$(id -g) //v4.vansin.top/vansin /home/tml/datasets
+sudo mount -t cifs -o username=vansin,password=Tml768300.,uid=$(id -u),gid=$(id -g) //192.168.4.21/vansin /home/tml/datasets
 
 
 
