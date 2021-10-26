@@ -119,5 +119,5 @@ python tools/deployment/pytorch2onnx.py \
     --verify \
     --dynamic-export \
     --cfg-options \
-      model.test_cfg.deploy_nms_pre=-1 \
+      model.test_cfg.deploy_nms_pre=-1
 ```
