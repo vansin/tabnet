@@ -54,24 +54,15 @@ mkdir /tmp/vansin
 sudo mount -t cifs -o username=vansin,password=Tml768300.,uid=$(id -u),gid=$(id -g) //v4.vansin.top/vansin /tmp/vansin
 ln -s /tmp/vansin/datasets $(pwd)/data
 ln -s /tmp/vansin/work_dirs $(pwd)/work_dirs
-
 ```
 ### 软链接
-
-
-
 ```shell
 ln -s /datasets/table0901/TableBank/Detection/ /home/tml/vansin/tabnet/data/table
 ```
-
 ## Train
-
-
 ```shell
 python tools/train.py configs/tabnet/table_v2.py
 ```
-
-
 ## Test
 ### Test 1 / 100 datasets
 ```shell
