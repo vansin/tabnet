@@ -242,7 +242,7 @@ def main(config, checkpoint, out):
 if __name__ == '__main__':
 
     work_dirs = os.listdir('work_dirs')
-    for work_dir in work_dirs:
+    for i, work_dir in enumerate(work_dirs):
         work_dir_files = os.listdir('work_dirs/' + work_dir)
         pth_files = []
         config_file = None
@@ -252,8 +252,8 @@ if __name__ == '__main__':
             if file_name.endswith('.py'):
                 config_file = 'work_dirs/' + work_dir + '/' + file_name
 
-        for pth_file in pth_files:
-            print('============================开始================================')
+        for j, pth_file in enumerate(pth_files):
+            print('===========', i, work_dirs.__len__(), j, pth_files.__len__(), '=============')
 
             print(config_file, ' ', pth_file)
             out = pth_file
