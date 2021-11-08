@@ -111,7 +111,10 @@ def parse_args(config, checkpoint, out):
 def main(config, checkpoint, out, eval_json):
 
     is_out_exist = osp.exists(out)
-    # is_eval_json_exist = osp.exists(eval_json)
+    is_eval_json_exist = osp.exists(eval_json)
+
+    if is_eval_json_exist:
+        return
 
     args = parse_args(config, checkpoint, out)
 
@@ -224,7 +227,7 @@ def main(config, checkpoint, out, eval_json):
 
     rank, _ = get_dist_info()
 
-    if rank == 0:
+    if rank == 0 and not is_eval_json_exist:
         if args.out and not is_out_exist:
             print(f'\nwriting results to {args.out}')
             mmcv.dump(outputs, args.out)
