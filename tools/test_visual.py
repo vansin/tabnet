@@ -38,14 +38,31 @@ if __name__ == '__main__':
     print(results)
 
 
+intput_data = []
+
+
 for result in results:
 
-    sns.set_theme(style='darkgrid')
-    # Load an example dataset with long-form data
-    df = pd.DataFrame.from_dict(result)
+    intput_data.extend(result)
 
-    # Plot the responses for different events and regions
-    sns.lineplot(x='epoch', y='bbox_mAP',
-                 data=df)
+    pass
 
-    plt.show()
+df = pd.DataFrame.from_dict(intput_data)
+
+g = sns.lineplot(x='epoch', y='bbox_mAP', data=df, hue='config',
+                 style='config', markers=True, dashes=False)
+# g.legend(loc='right', bbox_to_anchor=(1.5, 0.5), ncol=1)
+
+plt.show()
+print(plt)
+# for result in results:
+#
+#     sns.set_theme(style='darkgrid')
+#     # Load an example dataset with long-form data
+#     df = pd.DataFrame.from_dict(result)
+#
+#     # Plot the responses for different events and regions
+#     sns.lineplot(x='epoch', y='bbox_mAP',
+#                  data=df)
+#
+#     plt.show()
