@@ -274,11 +274,11 @@ if __name__ == '__main__':
             out = out.replace('.pth', '.pkl')
 
             eval_json = pth_file.replace('.pth', '_eval.json')
-            main(config_file, pth_file, out, eval_json)
+            # main(config_file, pth_file, out, eval_json)
 
-            # try:
-            #     main(config_file, pth_file, out, eval_json)
-            # except Exception as e:
-            #     print(e)
-            # finally:
-            #     print('================================')
+            try:
+                main(config_file, pth_file, out, eval_json)
+            except Exception as e:
+                print(e)
+            finally:
+                print('================================')
