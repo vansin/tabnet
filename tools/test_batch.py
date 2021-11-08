@@ -181,33 +181,33 @@ def main(config, checkpoint, out, eval_json):
     #     timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
     #     json_file = osp.join(args.work_dir, f'eval_{timestamp}.json')
 
+    # build the dataloader
+    dataset = build_dataset(cfg.data.test)
+    data_loader = build_dataloader(
+        dataset,
+        samples_per_gpu=samples_per_gpu,
+        workers_per_gpu=cfg.data.workers_per_gpu,
+        dist=distributed,
+        shuffle=False)
+
+    # build the model and load checkpoint
+    cfg.model.train_cfg = None
+    model = build_detector(cfg.model, test_cfg=cfg.get('test_cfg'))
+    fp16_cfg = cfg.get('fp16', None)
+    if fp16_cfg is not None:
+        wrap_fp16_model(model)
+    checkpoint = load_checkpoint(
+        model, args.checkpoint, map_location='cpu')
+    if args.fuse_conv_bn:
+        model = fuse_conv_bn(model)
+    # old versions did not save class info in checkpoints, this walkaround is
+    # for backward compatibility
+    if 'CLASSES' in checkpoint.get('meta', {}):
+        model.CLASSES = checkpoint['meta']['CLASSES']
+    else:
+        model.CLASSES = dataset.CLASSES
+
     if not is_out_exist:
-        # build the dataloader
-        dataset = build_dataset(cfg.data.test)
-        data_loader = build_dataloader(
-            dataset,
-            samples_per_gpu=samples_per_gpu,
-            workers_per_gpu=cfg.data.workers_per_gpu,
-            dist=distributed,
-            shuffle=False)
-
-        # build the model and load checkpoint
-        cfg.model.train_cfg = None
-        model = build_detector(cfg.model, test_cfg=cfg.get('test_cfg'))
-        fp16_cfg = cfg.get('fp16', None)
-        if fp16_cfg is not None:
-            wrap_fp16_model(model)
-        checkpoint = load_checkpoint(
-            model, args.checkpoint, map_location='cpu')
-        if args.fuse_conv_bn:
-            model = fuse_conv_bn(model)
-        # old versions did not save class info in checkpoints, this walkaround is
-        # for backward compatibility
-        if 'CLASSES' in checkpoint.get('meta', {}):
-            model.CLASSES = checkpoint['meta']['CLASSES']
-        else:
-            model.CLASSES = dataset.CLASSES
-
         if not distributed:
             model = MMDataParallel(model, device_ids=[0])
             outputs = single_gpu_test(model, data_loader, args.show, args.show_dir,
@@ -219,8 +219,11 @@ def main(config, checkpoint, out, eval_json):
                 broadcast_buffers=False)
             outputs = multi_gpu_test(model, data_loader, args.tmpdir,
                                      args.gpu_collect)
+    else:
+        outputs = mmcv.load(args.out)
 
     rank, _ = get_dist_info()
+
     if rank == 0:
         if args.out and not is_out_exist:
             print(f'\nwriting results to {args.out}')
@@ -268,9 +271,11 @@ if __name__ == '__main__':
             out = out.replace('.pth', '.pkl')
 
             eval_json = pth_file.replace('.pth', '_eval.json')
-            try:
-                main(config_file, pth_file, out, eval_json)
-            except Exception as e:
-                print(e)
-            finally:
-                print('================================')
+            main(config_file, pth_file, out, eval_json)
+
+            # try:
+            #     main(config_file, pth_file, out, eval_json)
+            # except Exception as e:
+            #     print(e)
+            # finally:
+            #     print('================================')
