@@ -112,3 +112,14 @@ python tools/deployment/pytorch2onnx.py \
     --cfg-options \
       model.test_cfg.deploy_nms_pre=-1
 ```
+
+## 加速技巧
+
+### RAM虚拟硬盘
+
+```shell
+mkdir /tmp/vansin_ram
+sudo mount -t tmpfs -o size=72G tmpfs /tmp/vansin_ram
+ln -s /tmp/vansin_ram/datasets $(pwd)/data
+
+```
