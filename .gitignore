@@ -123,3 +123,5 @@ work_dirs
 *.sh~
 
 checkpoints
+
+results

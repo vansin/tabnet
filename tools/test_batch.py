@@ -258,4 +258,11 @@ if __name__ == '__main__':
             print(config_file, ' ', pth_file)
             out = pth_file
             out = out.replace('.pth', '.pkl')
-            main(config_file, pth_file, out)
+            # eval_json = pth_file.replace('.pth', '_eval.json')
+
+            try:
+                main(config_file, pth_file, out)
+            except Exception as e:
+                print(e)
+            finally:
+                print('================================')
