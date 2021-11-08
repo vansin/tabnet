@@ -2,7 +2,7 @@
 import argparse
 import os
 import os.path as osp
-import time
+# import time
 import warnings
 
 import mmcv
@@ -108,7 +108,10 @@ def parse_args(config, checkpoint, out):
     return args
 
 
-def main(config, checkpoint, out):
+def main(config, checkpoint, out, eval_json):
+
+    is_out_exist = osp.exists(out)
+    # is_eval_json_exist = osp.exists(eval_json)
 
     args = parse_args(config, checkpoint, out)
 
@@ -173,53 +176,56 @@ def main(config, checkpoint, out):
 
     rank, _ = get_dist_info()
     # allows not to create
-    if args.work_dir is not None and rank == 0:
-        mmcv.mkdir_or_exist(osp.abspath(args.work_dir))
-        timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
-        json_file = osp.join(args.work_dir, f'eval_{timestamp}.json')
+    # if args.work_dir is not None and rank == 0:
+    #     mmcv.mkdir_or_exist(osp.abspath(args.work_dir))
+    #     timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+    #     json_file = osp.join(args.work_dir, f'eval_{timestamp}.json')
 
-    # build the dataloader
-    dataset = build_dataset(cfg.data.test)
-    data_loader = build_dataloader(
-        dataset,
-        samples_per_gpu=samples_per_gpu,
-        workers_per_gpu=cfg.data.workers_per_gpu,
-        dist=distributed,
-        shuffle=False)
+    if not is_out_exist:
+        # build the dataloader
+        dataset = build_dataset(cfg.data.test)
+        data_loader = build_dataloader(
+            dataset,
+            samples_per_gpu=samples_per_gpu,
+            workers_per_gpu=cfg.data.workers_per_gpu,
+            dist=distributed,
+            shuffle=False)
 
-    # build the model and load checkpoint
-    cfg.model.train_cfg = None
-    model = build_detector(cfg.model, test_cfg=cfg.get('test_cfg'))
-    fp16_cfg = cfg.get('fp16', None)
-    if fp16_cfg is not None:
-        wrap_fp16_model(model)
-    checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
-    if args.fuse_conv_bn:
-        model = fuse_conv_bn(model)
-    # old versions did not save class info in checkpoints, this walkaround is
-    # for backward compatibility
-    if 'CLASSES' in checkpoint.get('meta', {}):
-        model.CLASSES = checkpoint['meta']['CLASSES']
-    else:
-        model.CLASSES = dataset.CLASSES
+        # build the model and load checkpoint
+        cfg.model.train_cfg = None
+        model = build_detector(cfg.model, test_cfg=cfg.get('test_cfg'))
+        fp16_cfg = cfg.get('fp16', None)
+        if fp16_cfg is not None:
+            wrap_fp16_model(model)
+        checkpoint = load_checkpoint(
+            model, args.checkpoint, map_location='cpu')
+        if args.fuse_conv_bn:
+            model = fuse_conv_bn(model)
+        # old versions did not save class info in checkpoints, this walkaround is
+        # for backward compatibility
+        if 'CLASSES' in checkpoint.get('meta', {}):
+            model.CLASSES = checkpoint['meta']['CLASSES']
+        else:
+            model.CLASSES = dataset.CLASSES
 
-    if not distributed:
-        model = MMDataParallel(model, device_ids=[0])
-        outputs = single_gpu_test(model, data_loader, args.show, args.show_dir,
-                                  args.show_score_thr)
-    else:
-        model = MMDistributedDataParallel(
-            model.cuda(),
-            device_ids=[torch.cuda.current_device()],
-            broadcast_buffers=False)
-        outputs = multi_gpu_test(model, data_loader, args.tmpdir,
-                                 args.gpu_collect)
+        if not distributed:
+            model = MMDataParallel(model, device_ids=[0])
+            outputs = single_gpu_test(model, data_loader, args.show, args.show_dir,
+                                      args.show_score_thr)
+        else:
+            model = MMDistributedDataParallel(
+                model.cuda(),
+                device_ids=[torch.cuda.current_device()],
+                broadcast_buffers=False)
+            outputs = multi_gpu_test(model, data_loader, args.tmpdir,
+                                     args.gpu_collect)
 
     rank, _ = get_dist_info()
     if rank == 0:
-        if args.out:
+        if args.out and not is_out_exist:
             print(f'\nwriting results to {args.out}')
             mmcv.dump(outputs, args.out)
+
         kwargs = {} if args.eval_options is None else args.eval_options
         if args.format_only:
             dataset.format_results(outputs, **kwargs)
@@ -235,8 +241,9 @@ def main(config, checkpoint, out):
             metric = dataset.evaluate(outputs, **eval_kwargs)
             print(metric)
             metric_dict = dict(config=args.config, metric=metric)
-            if args.work_dir is not None and rank == 0:
-                mmcv.dump(metric_dict, json_file)
+            # if args.work_dir is not None and rank == 0:
+            #     mmcv.dump(metric_dict, eval_json)
+            mmcv.dump(metric_dict, eval_json)
 
 
 if __name__ == '__main__':
@@ -253,15 +260,16 @@ if __name__ == '__main__':
                 config_file = 'work_dirs/' + work_dir + '/' + file_name
 
         for j, pth_file in enumerate(pth_files):
-            print('===========', i, work_dirs.__len__(), j, pth_files.__len__(), '=============')
+            print('===========', i, work_dirs.__len__(),
+                  j, pth_files.__len__(), '=============')
 
             print(config_file, ' ', pth_file)
             out = pth_file
             out = out.replace('.pth', '.pkl')
-            # eval_json = pth_file.replace('.pth', '_eval.json')
 
+            eval_json = pth_file.replace('.pth', '_eval.json')
             try:
-                main(config_file, pth_file, out)
+                main(config_file, pth_file, out, eval_json)
             except Exception as e:
                 print(e)
             finally:
