@@ -123,3 +123,24 @@ sudo mount -t tmpfs -o size=72G tmpfs /tmp/vansin_ram
 ln -s /tmp/vansin_ram/datasets $(pwd)/data
 
 ```
+
+## 结果分析技巧
+
+### 网络图可视化
+
+
+```shell
+python tools/deployment/pytorch2onnx.py \
+    ${CONFIG_FILE} \
+    ${CHECKPOINT_FILE} \
+    --output-file ${OUTPUT_FILE} \
+    --input-img ${INPUT_IMAGE_PATH} \
+    --shape ${IMAGE_SHAPE} \
+    --test-img ${TEST_IMAGE_PATH} \
+    --opset-version ${OPSET_VERSION} \
+    --cfg-options ${CFG_OPTIONS}
+    --dynamic-export \
+    --show \
+    --verify \
+    --simplify \
+```
