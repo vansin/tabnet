@@ -118,6 +118,7 @@ python tools/deployment/pytorch2onnx.py \
 ### RAM虚拟硬盘
 
 ```shell
+
 mkdir /tmp/vansin_ram
 sudo mount -t tmpfs -o size=72G tmpfs /tmp/vansin_ram
 ln -s /tmp/vansin_ram/datasets $(pwd)/data
@@ -142,5 +143,5 @@ python tools/deployment/pytorch2onnx.py \
     --dynamic-export \
     --show \
     --verify \
-    --simplify \
+    --simplify
 ```

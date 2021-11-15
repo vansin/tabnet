@@ -60,8 +60,7 @@ model = dict(
         with_cp=False,
         init_cfg=dict(
             type='Pretrained',
-            checkpoint=
-            'https://download.openmmlab.com/mmclassification/v0/swin-transformer/swin_tiny_224_b16x64_300e_imagenet_20210616_090925-66df6be6.pth'
+            checkpoint='https://download.openmmlab.com/mmclassification/v0/swin-transformer/swin_tiny_224_b16x64_300e_imagenet_20210616_090925-66df6be6.pth'
         )),
     neck=dict(
         type='FPN',
@@ -215,9 +214,12 @@ data = dict(
         img_prefix='data/table/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
+            dict(type='MiddleDebug'),
             dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
+            dict(type='MiddleDebug'),
             dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
             dict(type='RandomFlip', flip_ratio=0.5),
+            dict(type='MiddleDebug'),
             dict(
                 type='Normalize',
                 mean=[123.675, 116.28, 103.53],
