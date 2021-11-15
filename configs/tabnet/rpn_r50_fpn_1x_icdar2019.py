@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/rpn_r50_fpn.py', '../_base_/datasets/tablebank.py',
+    '../_base_/models/rpn_r50_fpn.py', '../_base_/datasets/table_icdar2019.py',
     '../_base_/schedules/schedule_1x.py', '../_base_/default_runtime.py'
 ]
 img_norm_cfg = dict(
