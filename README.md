@@ -81,6 +81,8 @@ CUDA_VISIBLE_DEVICES=1 python test.py configs/tabnet/table_v4-mask_rcnn_swin-t-p
 --eval bbox
 ```
 
+
+
 ```shell
 python demo/image_demo.py /datasets/table0901/TableBank/Detection/images/%5BMS-DOM2S%5D-180323_6.jpg \
     work_dirs/faster_rcnn_r50_fpn_2x_coco/table_v3.py \
@@ -127,8 +129,16 @@ ln -s /tmp/vansin_ram/datasets $(pwd)/data
 
 ## 结果分析技巧
 
-### 网络图可视化
+### 结果分析
 
+```shell
+python tools/analysis_tools/analyze_results.py \
+configs/tabnet/table_v7-mask_rcnn_swin-t-p4-w7_fpn_fp16_ms-crop-3x_icdar2013.py \
+work_dirs/table_v7-mask_rcnn_swin-t-p4-w7_fpn_fp16_ms-crop-3x_icdar2013/epoch_34.pkl \
+results
+```
+
+### 网络图可视化
 
 ```shell
 python tools/deployment/pytorch2onnx.py \
