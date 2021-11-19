@@ -328,7 +328,7 @@ lr_config = dict(
     step=[27, 33])
 runner = dict(type='EpochBasedRunner', max_epochs=36)
 checkpoint_config = dict(interval=1)
-log_config = dict(interval=50, hooks=[dict(type='TextLoggerHook')])
+log_config = dict(interval=1, hooks=[dict(type='TextLoggerHook')])
 custom_hooks = [dict(type='NumClassCheckHook')]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
