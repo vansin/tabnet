@@ -250,7 +250,7 @@ lr_config = dict(
 runner = dict(type='EpochBasedRunner', max_epochs=12)
 checkpoint_config = dict(interval=1)
 log_config = dict(interval=50, hooks=[dict(type='TextLoggerHook')])
-custom_hooks = [dict(type='NumClassCheckHook')]
+custom_hooks = [dict(type='NumClassCheckHook'), dict(type='UploadHook')]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 load_from = None
