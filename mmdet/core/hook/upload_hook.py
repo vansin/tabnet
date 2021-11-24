@@ -18,14 +18,54 @@ class UploadHook(Hook):
     def __init__(self, interval=1):
         self.interval = interval
 
+    def before_run(self, runner):
+        print('upload before_run')
+        pass
+
+    def after_run(self, runner):
+        print('upload after_run')
+        pass
+
+    def before_epoch(self, runner):
+        print('upload before_epoch')
+        pass
+
+    def after_epoch(self, runner):
+        print('upload after_epoch')
+        pass
+
+    def before_iter(self, runner):
+        print('upload before_iter')
+        pass
+
+    def after_iter(self, runner):
+        print('upload after_iter')
+        pass
+
+    def before_train_epoch(self, runner):
+        print('upload before_train_epoch')
+
+    def before_val_epoch(self, runner):
+        print('upload before_val_epoch')
+
+    def after_train_epoch(self, runner):
+        print('upload after_train_epoch')
+
+    def after_val_epoch(self, runner):
+        print('upload after_val_epoch')
+
+    def before_train_iter(self, runner):
+        print('upload before_train_iter')
+
+    def before_val_iter(self, runner):
+        print('upload before_val_iter')
+
     def after_train_iter(self, runner):
 
         print('upload loss after_train_iter')
-
         if self.every_n_iters(runner, self.interval):
             assert torch.isfinite(runner.outputs['loss']), \
                 runner.logger.info('loss become infinite or NaN!')
 
-    def before_run(self, runner):
-
-        print('before_run after_train_iter')
+    def after_val_iter(self, runner):
+        print('upload after_val_iter')
