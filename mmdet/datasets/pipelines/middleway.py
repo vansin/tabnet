@@ -39,5 +39,5 @@ class MiddleDebug:
         Returns:
             dict: The dict contains loaded image and meta information.
         """
-        print(results)
+        # print(results)
         return results
