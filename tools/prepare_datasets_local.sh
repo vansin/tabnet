@@ -12,11 +12,12 @@ unzip /tmp/vansin_ram/datasets.zip -d /tmp/vansin_ram
 ln -s /tmp/vansin_ram/datasets $(pwd)/data
 rm -rf /tmp/vansin_ram/datasets.zip
 
-ln -s /media/tml/data_tml/weight_files/tabnet/work_dirs $(pwd)/work_dirs
-ln -s /media/tml/data_tml/inference_results/tabnet/results $(pwd)/results
-
 mkdir /tmp/vansin
 sudo mount -t cifs -o username=vansin,password=Tml768300.,uid=$(id -u),gid=$(id -g) //v4.vansin.top/vansin /tmp/vansin
 if [ $? != 0 ]; then
 sudo mount -t cifs -o username=vansin,password=Tml768300.,uid=$(id -u),gid=$(id -g) //192.168.4.21/vansin /tmp/vansin
 fi
+
+# ln -s /media/tml/data_tml/weight_files/tabnet/work_dirs $(pwd)/work_dirs
+ln -s /tmp/vansin/work_dirs $(pwd)/work_dirs
+ln -s /media/tml/data_tml/inference_results/tabnet/results $(pwd)/results
