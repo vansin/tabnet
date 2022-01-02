@@ -1,12 +1,12 @@
 #! /bin/bash
 
-mkdir /tmp/vansin_ram
-sudo mount -t tmpfs -o size=72G tmpfs /tmp/vansin_ram
+# mkdir /tmp/vansin_ram
+# sudo mount -t tmpfs -o size=72G tmpfs /tmp/vansin_ram
 
 
-cp /home/tml/datasets/datasets.zip /tmp/vansin_ram/datasets.zip
-unzip /tmp/vansin_ram/datasets.zip -d /tmp/vansin_ram
-ln -s /tmp/vansin_ram/datasets $(pwd)/data
+# cp /home/tml/datasets/datasets.zip /tmp/vansin_ram/datasets.zip
+# unzip /tmp/vansin_ram/datasets.zip -d /tmp/vansin_ram
+# ln -s /tmp/vansin_ram/datasets $(pwd)/data
 
 
 mkdir /tmp/vansin
