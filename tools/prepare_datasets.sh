@@ -13,6 +13,7 @@ mkdir /tmp/vansin
 sudo mount -t cifs -o username=vansin,password=Tml768300.,uid=$(id -u),gid=$(id -g) //v4.vansin.top/vansin /tmp/vansin
 if [ $? != 0 ]; then
 sudo mount -t cifs -o username=vansin,password=Tml768300.,uid=$(id -u),gid=$(id -g) //192.168.4.21/vansin /tmp/vansin
+sudo mount -t cifs -o username=vansin,password=Tml768300.,uid=$(id -u),gid=$(id -g) //10.52.130.37/vansin /tmp/vansin
 fi
 
 ln -s /tmp/vansin/datasets $(pwd)/data
