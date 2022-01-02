@@ -13,3 +13,4 @@ ln -s /tmp/vansin_ram/datasets $(pwd)/data
 rm -rf /tmp/vansin_ram/datasets.zip
 
 ln -s /media/tml/data_tml/weight_files/tabnet/work_dirs $(pwd)/work_dirs
+ln -s /media/tml/data_tml/inference_results/tabnet/results $(pwd)/results
