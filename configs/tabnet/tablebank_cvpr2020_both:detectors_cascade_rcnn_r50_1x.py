@@ -1,6 +1,6 @@
 # _base_ = [
 #     '../_base_/models/cascade_rcnn_r50_fpn.py',
-#     '../_base_/datasets/tablebank_cvpr2020_both_instance.py',
+#     '../_base_/datasets/tablebank_cvpr2020_both_detection.py',
 #     '../_base_/schedules/schedule_1x.py', '../_base_/default_runtime.py'
 # ]
 
@@ -236,7 +236,7 @@ img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
+    dict(type='LoadAnnotations', with_bbox=True),
     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(
@@ -246,7 +246,7 @@ train_pipeline = [
         to_rgb=True),
     dict(type='Pad', size_divisor=32),
     dict(type='DefaultFormatBundle'),
-    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks'])
+    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -276,7 +276,7 @@ data = dict(
         img_prefix='data/table/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
-            dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
+            dict(type='LoadAnnotations', with_bbox=True),
             dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
             dict(type='RandomFlip', flip_ratio=0.5),
             dict(
@@ -286,9 +286,7 @@ data = dict(
                 to_rgb=True),
             dict(type='Pad', size_divisor=32),
             dict(type='DefaultFormatBundle'),
-            dict(
-                type='Collect',
-                keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks'])
+            dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])
         ]),
     val=dict(
         type='TableDataset',
@@ -336,7 +334,7 @@ data = dict(
                     dict(type='Collect', keys=['img'])
                 ])
         ]))
-evaluation = dict(metric=['bbox', 'segm'])
+evaluation = dict(interval=1, metric='bbox')
 optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
 lr_config = dict(
