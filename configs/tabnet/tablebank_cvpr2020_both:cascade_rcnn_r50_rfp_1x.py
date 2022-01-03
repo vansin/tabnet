@@ -1,6 +1,6 @@
 # _base_ = [
 #     '../_base_/models/cascade_rcnn_r50_fpn.py',
-#     '../_base_/datasets/icdar2019_tracka_modern_detection.py',
+#     '../_base_/datasets/tablebank_cvpr2020_both_detection.py',
 #     '../_base_/schedules/schedule_1x.py', '../_base_/default_runtime.py'
 # ]
 
@@ -26,7 +26,6 @@
 #             conv_cfg=dict(type='ConvAWS'),
 #             pretrained='torchvision://resnet50',
 #             style='pytorch')))
-
 
 model = dict(
     type='CascadeRCNN',
@@ -265,8 +264,8 @@ data = dict(
     workers_per_gpu=2,
     train=dict(
         type='TableDataset',
-        ann_file='data/icdar2019/modern_train.json',
-        img_prefix='data/icdar2019/training/TRACKA/ground_truth',
+        ann_file='data/table/annotations/both_train.json',
+        img_prefix='data/table/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='LoadAnnotations', with_bbox=True),
@@ -283,8 +282,8 @@ data = dict(
         ]),
     val=dict(
         type='TableDataset',
-        ann_file='data/icdar2019/modern_test.json',
-        img_prefix='data/icdar2019/test/TRACKA/',
+        ann_file='data/table/annotations/both_test.json',
+        img_prefix='data/table/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -306,8 +305,8 @@ data = dict(
         ]),
     test=dict(
         type='TableDataset',
-        ann_file='data/icdar2019/modern_test.json',
-        img_prefix='data/icdar2019/test/TRACKA/',
+        ann_file='data/table/annotations/both_test.json',
+        img_prefix='data/table/images/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -345,5 +344,5 @@ log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-work_dir = './work_dirs/icdar2019_tracka_modern:cascade_rcnn_r50_rfp_1x'
+work_dir = './work_dirs/tablebank_cvpr2020_both:cascade_rcnn_r50_rfp_1x'
 gpu_ids = range(0, 1)
