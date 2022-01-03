@@ -323,5 +323,5 @@ log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-work_dir = './work_dirs/tablebank_cvpr2020_both_instance:cascade_mask_rcnn_r50_fpn_1x'
+work_dir = './work_dirs/tablebank_cvpr2020_both:cascade_mask_rcnn_r50_fpn_1x'
 gpu_ids = range(0, 1)
