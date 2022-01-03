@@ -1,3 +1,4 @@
+import json
 import os
 
 import matplotlib.pyplot as plt
@@ -47,7 +48,14 @@ for result in results:
 
     pass
 
+with open('/home/tml/Nutstore Files/ubuntu/paper/data/1.json', 'w') as f:
+    json.dump(results, f)
+
 df = pd.DataFrame.from_dict(intput_data)
+
+
+df.to_csv('/home/tml/Nutstore Files/ubuntu/paper/data/1.csv')
+
 
 g = sns.lineplot(x='epoch', y='bbox_mAP', data=df, hue='config',
                  style='config', markers=True, dashes=False)
