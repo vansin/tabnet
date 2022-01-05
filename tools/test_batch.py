@@ -113,8 +113,9 @@ def main(config, checkpoint, out, eval_json):
     is_out_exist = osp.exists(out)
     is_eval_json_exist = osp.exists(eval_json)
 
-    if is_eval_json_exist:
-        return
+    is_eval_json_exist = False
+    # if is_eval_json_exist:
+    #     return
 
     args = parse_args(config, checkpoint, out)
 
@@ -194,34 +195,33 @@ def main(config, checkpoint, out, eval_json):
         shuffle=False)
 
     # build the model and load checkpoint
-    cfg.model.train_cfg = None
-    model = build_detector(cfg.model, test_cfg=cfg.get('test_cfg'))
-    fp16_cfg = cfg.get('fp16', None)
-    if fp16_cfg is not None:
-        wrap_fp16_model(model)
-    checkpoint = load_checkpoint(
-        model, args.checkpoint, map_location='cpu')
-    if args.fuse_conv_bn:
-        model = fuse_conv_bn(model)
-    # old versions did not save class info in checkpoints, this walkaround is
-    # for backward compatibility
-    if 'CLASSES' in checkpoint.get('meta', {}):
-        model.CLASSES = checkpoint['meta']['CLASSES']
-    else:
-        model.CLASSES = dataset.CLASSES
-
     if not is_out_exist:
-        if not distributed:
-            model = MMDataParallel(model, device_ids=[0])
-            outputs = single_gpu_test(model, data_loader, args.show, args.show_dir,
-                                      args.show_score_thr)
+
+        cfg.model.train_cfg = None
+        model = build_detector(cfg.model, test_cfg=cfg.get('test_cfg'))
+        fp16_cfg = cfg.get('fp16', None)
+        if fp16_cfg is not None:
+            wrap_fp16_model(model)
+        checkpoint = load_checkpoint(
+            model, args.checkpoint, map_location='cpu')
+        if args.fuse_conv_bn:
+            model = fuse_conv_bn(model)
+        # old versions did not save class info in checkpoints, this walkaround is
+        # for backward compatibility
+        if 'CLASSES' in checkpoint.get('meta', {}):
+            model.CLASSES = checkpoint['meta']['CLASSES']
         else:
-            model = MMDistributedDataParallel(
-                model.cuda(),
-                device_ids=[torch.cuda.current_device()],
-                broadcast_buffers=False)
-            outputs = multi_gpu_test(model, data_loader, args.tmpdir,
-                                     args.gpu_collect)
+            model.CLASSES = dataset.CLASSES
+
+            if not distributed:
+                model = MMDataParallel(model, device_ids=[0])
+                outputs = single_gpu_test(model, data_loader, args.show, args.show_dir, args.show_score_thr)
+            else:
+                model = MMDistributedDataParallel(
+                    model.cuda(),
+                    device_ids=[torch.cuda.current_device()],
+                    broadcast_buffers=False)
+                outputs = multi_gpu_test(model, data_loader, args.tmpdir, args.gpu_collect)
     else:
         outputs = mmcv.load(args.out)
 
