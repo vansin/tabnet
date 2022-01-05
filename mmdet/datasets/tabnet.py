@@ -543,7 +543,7 @@ class TableDataset(CustomDataset):
 
                 # follow are custom edit
                 eval_results['cocoEval_stats'] = cocoEval.stats
-                iou_ap_recll_f2_list = []
+                iou_infos = []
                 for i in range(12, 22):
                     e = dict()
                     iou = 0.5 + (i - 12) * 0.05
@@ -555,9 +555,9 @@ class TableDataset(CustomDataset):
                     e['precision'] = precision
                     e['recall'] = recall
                     e['f1_score'] = f1_score
-                    iou_ap_recll_f2_list.append(e)
+                    iou_infos.append(e)
 
-                eval_results['iou_ap_recll_f2_list'] = iou_ap_recll_f2_list
+                eval_results['iou_infos'] = iou_infos
 
         if tmp_dir is not None:
             tmp_dir.cleanup()
