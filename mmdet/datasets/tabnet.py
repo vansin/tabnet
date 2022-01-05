@@ -540,6 +540,25 @@ class TableDataset(CustomDataset):
                 eval_results[f'{metric}_mAP_copypaste'] = (
                     f'{ap[0]:.3f} {ap[1]:.3f} {ap[2]:.3f} {ap[3]:.3f} '
                     f'{ap[4]:.3f} {ap[5]:.3f}')
+
+                # follow are custom edit
+                eval_results['cocoEval_stats'] = cocoEval.stats
+                iou_ap_recll_f2_list = []
+                for i in range(12, 22):
+                    e = dict()
+                    iou = 0.5 + (i - 12) * 0.05
+                    precision = eval_results['cocoEval_stats'][i]
+                    recall = eval_results['cocoEval_stats'][i + 10]
+                    f1_score = 2 * precision * recall / (precision + recall)
+
+                    e['iou'] = iou
+                    e['precision'] = precision
+                    e['recall'] = recall
+                    e['f1_score'] = f1_score
+                    iou_ap_recll_f2_list.append(e)
+
+                eval_results['iou_ap_recll_f2_list'] = iou_ap_recll_f2_list
+
         if tmp_dir is not None:
             tmp_dir.cleanup()
         return eval_results
