@@ -528,7 +528,7 @@ class TableDataset(CustomDataset):
 
                 if metric_items is None:
                     metric_items = [
-                        'mAP', 'mAP_50', 'mAP_75', 'mAP_s', 'mAP_m', 'mAP_l'
+                        'mAP', 'mAP_50', 'mAP_75', 'mAP_s', 'mAP_m', 'mAP_l', 'AR@100', 'AR@300', 'AR@1000'
                     ]
 
                 for metric_item in metric_items:
@@ -559,6 +559,10 @@ class TableDataset(CustomDataset):
                     iou_infos.append(e)
 
                 eval_results['iou_infos'] = iou_infos
+                eval_results['f1_score'] = 2 * \
+                    eval_results['bbox_mAP'] * \
+                    eval_results['bbox_AR@1000'] / \
+                    (eval_results['bbox_mAP'] + eval_results['bbox_AR@1000'])
 
         if tmp_dir is not None:
             tmp_dir.cleanup()
