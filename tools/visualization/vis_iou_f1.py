@@ -6,6 +6,9 @@ import mmcv
 import pandas as pd
 import seaborn as sns
 
+prefix = '/home/tml/Nutstore Files/ubuntu/paper/data/iou'
+
+
 if __name__ == '__main__':
 
     work_dirs = os.listdir('work_dirs')
@@ -29,14 +32,18 @@ if __name__ == '__main__':
                 config_name = data_origin['config'].split('/')[-1]
                 data['config'] = config_name
                 data.update(data_origin['metric'])
-                iou_curves = data_origin['metric']['iou_infos']
-                df = pd.DataFrame.from_dict(iou_curves)
-                g = sns.lineplot(x='iou', y='f1_score', data=df, markers=True, dashes=False)
-                # g.legend(loc='right', bbox_to_anchor=(1.5, 0.5), ncol=1)
-                plt.show()
-                print(plt)
 
-                eval_files.append(data)
+                try:
+                    iou_curves = data_origin['metric']['iou_infos']
+                    df = pd.DataFrame.from_dict(iou_curves)
+                    df.to_csv(prefix + '/' + work_dir + '=' + str(epoch) + '.csv')
+                    # g = sns.lineplot(x='iou', y='f1_score', data=df, markers=True, dashes=False)
+                    # g.legend(loc='right', bbox_to_anchor=(1.5, 0.5), ncol=1)
+                    # plt.show()
+                    # print(plt)
+                    eval_files.append(data)
+                except Exception as e:
+                    print(e)
             if file_name.endswith('.py'):
                 config_file = 'work_dirs/' + work_dir + '/' + file_name
 
@@ -64,7 +71,7 @@ df = pd.DataFrame.from_dict(intput_data)
 df.to_csv('/home/tml/Nutstore Files/ubuntu/paper/data/1.csv')
 
 
-g = sns.lineplot(x='iou', y='f1_score', data=df, hue='config',
+g = sns.lineplot(x='epoch', y='bbox_mAP', data=df, hue='config',
                  style='config', markers=True, dashes=False)
 # g.legend(loc='right', bbox_to_anchor=(1.5, 0.5), ncol=1)
 
