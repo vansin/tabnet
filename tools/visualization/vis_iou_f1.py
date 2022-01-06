@@ -14,6 +14,7 @@ if __name__ == '__main__':
     work_dirs = os.listdir('work_dirs')
 
     results = []
+    best_f1 = []
 
     for i, work_dir in enumerate(work_dirs):
         work_dir_files = os.listdir('work_dirs/' + work_dir)
@@ -48,8 +49,12 @@ if __name__ == '__main__':
                 config_file = 'work_dirs/' + work_dir + '/' + file_name
 
         eval_files.sort(key=lambda x: x['epoch'])
+        try:
+            best_f1.append(
+                (work_dir, max(eval_files, key=lambda x: x['f1_score'])['f1_score']))
+        except Exception as e:
+            print(e)
         results.append(eval_files)
-
     print(results)
 
 
