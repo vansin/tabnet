@@ -29,7 +29,7 @@ if __name__ == '__main__':
                 config_name = data_origin['config'].split('/')[-1]
                 data['config'] = config_name
                 data.update(data_origin['metric'])
-                iou_curves = data_origin['metric']['iou_ap_recll_f2_list']
+                iou_curves = data_origin['metric']['iou_infos']
                 df = pd.DataFrame.from_dict(iou_curves)
                 g = sns.lineplot(x='iou', y='f1_score', data=df, markers=True, dashes=False)
                 # g.legend(loc='right', bbox_to_anchor=(1.5, 0.5), ncol=1)
