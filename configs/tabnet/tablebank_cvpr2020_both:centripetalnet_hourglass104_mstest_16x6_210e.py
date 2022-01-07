@@ -103,3 +103,4 @@ lr_config = dict(
     warmup_ratio=1.0 / 3,
     step=[190])
 runner = dict(type='EpochBasedRunner', max_epochs=210)
+evaluation = dict(interval=1, metric='mAP')
